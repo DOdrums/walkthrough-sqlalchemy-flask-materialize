@@ -8,6 +8,42 @@
         <a href="{{ url_for('add_task') }}" class="btn-large light-blue-darken-2">
             Add Task <i class="fas fa-plus-square right"></i>
         </a>
+        <!-- <div class="row">
+            {% for task in tasks %}
+            <div class="col s12 m6 l3">
+                <div class="card light-blue darken-4 center-align">
+                    <div class="card-content white-text">
+                        <span class="card-title">{{ task.task_name }}</span>
+                    </div>
+                    <div class="card-action">
+                        <a href="#" class="btn green accent-4">Edit</a>
+                        <a href="#" class="btn red">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %} -->
     </div>
+</div>
 
-    {% endblock %}
+
+<ul class="collapsible">
+    {% for task in tasks|sort(attribute="due_date") %}
+    <li>
+        <div class="collapsible-header white-text light-blue darken-4">
+            <i class="fas fa-caret-down"></i>
+            <strong>{{ task.task_name }}</strong> : {{ task.due_date.strftime("%d %B, %Y") }}
+            {% if task.is_urgent == True %}
+            <i class="fas fa-exclamation-circle light-blue-text text-lighten-2"></i>
+            {% endif %}
+        </div>
+        <div class="collapsible-body">
+            <strong>{{ task.category }}</strong>
+            <p>{{ task.task_description}}</p>
+            <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn green accent-4">Edit</a>
+            <a href="#" class="btn red">Delete</a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
